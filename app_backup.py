@@ -5,8 +5,7 @@ import pandas as pd
 import altair as alt
 
 from rdkit import Chem
-from rdkit.Chem import AllChem, Descriptors
-
+from rdkit.Chem import AllChem, Descriptors, Draw
 # =========================
 # PAGE CONFIG
 # =========================
@@ -174,13 +173,27 @@ with col_btn2:
 
         prob, label = predict_toxicity(smiles)
 
+        mol = Chem.MolFromSmiles(smiles)
+
+        if mol:
+         image = Draw.MolToImage(mol, size=(350,350))
+         st.image(image, caption="Chemical Structure")
+
+       
+
         if prob is None:
             st.error("❌ Invalid SMILES")
 
         else:
             air, water, soil, env = environmental_risk(smiles)
 
-            st.success(f"⚠️ Toxicity: {prob:.4f}")
+            st.success(f"⚠️ Toxicity: {prob*100:.2f}%")
+            #st.metric(
+               #label="Toxicity Probability",
+               #value=f"{prob*100:.2f}%")
+            confidence = int(prob * 100)
+            st.progress(confidence)
+            
             # ✅ COLOR LABEL FIX
         if label == "TOXIC":
             st.error(f"🔬 Label: {label}")   # RED
