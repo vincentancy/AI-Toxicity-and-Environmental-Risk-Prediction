@@ -85,7 +85,11 @@ with st.sidebar:
 # LOAD MODEL
 # =========================
 xgb = joblib.load("toxicity_xgboost_model.pkl")
-
+# =========================
+# PREDICTION HISTORY
+# =========================
+if "history" not in st.session_state:
+    st.session_state.history = []
 # =========================
 # SMILES → FP
 # =========================
@@ -214,6 +218,13 @@ with col_btn2:
         st.session_state.water = water
         st.session_state.soil = soil
         st.session_state.env = env
+        st.session_state.history.append({
+            "SMILES": smiles,
+            "Prediction": label,
+            "Probability": f"{prob*100:.2f}%",
+            "Toxicity Level": tox_level,
+            "Environmental Risk": env
+        })
 
 # =========================
 # GRAPH (SAFE)
@@ -248,7 +259,21 @@ with col2:
 
     else:
         st.info("Run analysis first")
-st.markdown("---")
+# =========================
+# PREDICTION HISTORY
+# =========================
+
+if len(st.session_state.history) > 0:
+
+    st.subheader("📜 Prediction History")
+
+    history_df = pd.DataFrame(st.session_state.history)
+
+    st.dataframe(
+        history_df,
+        use_container_width=True,
+        hide_index=True
+    )
 
 st.markdown(
 """
