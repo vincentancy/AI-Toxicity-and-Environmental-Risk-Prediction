@@ -3,3 +3,7 @@ venv/
 .venv/
 __pycache__/
 *.pyc
+
+app1.py
+appold.py
+app_backup.py
