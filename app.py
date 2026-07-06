@@ -5,22 +5,82 @@ import pandas as pd
 import altair as alt
 
 from rdkit import Chem
-from rdkit.Chem import AllChem, Descriptors
-
+from rdkit.Chem import AllChem, Descriptors, Draw
 # =========================
 # PAGE CONFIG
 # =========================
-st.set_page_config(page_title="Environmental Risk System", layout="wide")
+st.set_page_config(
+    page_title="AI Chemical Toxicity Prediction",
+    page_icon="🧪",
+    layout="wide",
+    initial_sidebar_state="expanded"
+)
 
 # Small font
 st.markdown("""
 <style>
-html, body, [class*="css"] {
-    font-size: 14px;
+
+.main {
+    background-color: #f8f9fa;
 }
+
+h1 {
+    color: #0E4C92;
+    text-align:center;
+}
+
+h2,h3 {
+    color:#0E4C92;
+}
+
+.stButton>button{
+    background:#0E4C92;
+    color:white;
+    border-radius:10px;
+    height:45px;
+    width:100%;
+    font-size:16px;
+}
+
+.stButton>button:hover{
+    background:#1565C0;
+}
+
+div[data-testid="stMetric"]{
+    background:white;
+    border-radius:12px;
+    padding:15px;
+    box-shadow:0px 3px 10px rgba(0,0,0,0.1);
+}
+
+footer{
+    visibility:hidden;
+}
+
 </style>
 """, unsafe_allow_html=True)
+with st.sidebar:
 
+    st.image(
+        "https://img.icons8.com/color/96/artificial-intelligence.png",
+        width=80
+    )
+
+    st.title("AI Toxicity System")
+
+    st.markdown("---")
+
+    st.write("### Features")
+
+    st.success("✔ Chemical Toxicity Prediction")
+    st.success("✔ Environmental Risk")
+    st.success("✔ Air Risk")
+    st.success("✔ Water Risk")
+    st.success("✔ Soil Risk")
+
+    st.markdown("---")
+
+    st.info("Built using\n\nPython • RDKit • XGBoost • Streamlit")
 # =========================
 # LOAD MODEL
 # =========================
@@ -82,7 +142,14 @@ def environmental_risk(smiles):
 # =========================
 # TITLE
 # =========================
-st.title("🌍 Chemical Toxicity and Environmental Risk Prediction System")
+st.markdown("""
+# 🌍 AI-Based Chemical Toxicity Prediction
+
+### Environmental Risk Assessment using Machine Learning
+
+Predict the toxicity of chemical compounds from **SMILES notation**
+and estimate their environmental impact.
+""")
 
 # =========================
 # LAYOUT
@@ -92,11 +159,27 @@ col1, col2 = st.columns([1, 1.2])
 with col1:
     st.subheader("🧪 Input")
     smiles = st.text_input("Enter SMILES")
-    analyze = st.button("Analyze")
+    col_btn1, col_btn2 = st.columns(2)
+
+with col_btn1:
+    analyze = st.button("🔍 Analyze")
+
+with col_btn2:
+    if st.button("🔄 Reset"):
+        st.session_state.clear()
+        st.rerun()
 
     if analyze:
 
         prob, label = predict_toxicity(smiles)
+
+        mol = Chem.MolFromSmiles(smiles)
+
+        if mol:
+         image = Draw.MolToImage(mol, size=(350,350))
+         st.image(image, caption="Chemical Structure")
+
+       
 
         if prob is None:
             st.error("❌ Invalid SMILES")
@@ -104,7 +187,13 @@ with col1:
         else:
             air, water, soil, env = environmental_risk(smiles)
 
-            st.success(f"⚠️ Toxicity: {prob:.4f}")
+            st.success(f"⚠️ Toxicity: {prob*100:.2f}%")
+            #st.metric(
+               #label="Toxicity Probability",
+               #value=f"{prob*100:.2f}%")
+            confidence = int(prob * 100)
+            st.progress(confidence)
+            
             # ✅ COLOR LABEL FIX
         if label == "TOXIC":
             st.error(f"🔬 Label: {label}")   # RED
@@ -159,4 +248,19 @@ with col2:
 
     else:
         st.info("Run analysis first")
+st.markdown("---")
+
+st.markdown(
+"""
+<center>
+
+Developed by **Ancy Evelyne**
+
+MCA Final Year Project
+
+AI | Machine Learning | Environmental Risk Assessment
+
+</center>
+""",
+unsafe_allow_html=True)
         
