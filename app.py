@@ -5,7 +5,7 @@ import pandas as pd
 import altair as alt
 
 from rdkit import Chem
-from rdkit.Chem import AllChem, Descriptors, Draw
+from rdkit.Chem import AllChem, Descriptors
 # =========================
 # PAGE CONFIG
 # =========================
@@ -177,15 +177,7 @@ with col_btn2:
 
         prob, label = predict_toxicity(smiles)
 
-        mol = Chem.MolFromSmiles(smiles)
-
-        if mol:
-         image = Draw.MolToImage(mol, size=(350,350))
-         st.image(image, caption="Chemical Structure")
-
-       
-
-        if prob is None:
+         if prob is None:
             st.error("❌ Invalid SMILES")
 
         else:
