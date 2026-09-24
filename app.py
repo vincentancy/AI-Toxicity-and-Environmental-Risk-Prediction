@@ -173,43 +173,38 @@ with col_btn2:
         st.session_state.clear()
         st.rerun()
 
-    if analyze:
+if analyze:
+    prob, label = predict_toxicity(smiles)
 
-        prob, label = predict_toxicity(smiles)
+    if prob is None:
+        st.error("❌ Invalid SMILES")
+    else:
+        air, water, soil, env = environmental_risk(smiles)
 
-         if prob is None:
-            st.error("❌ Invalid SMILES")
+        st.success(f"⚠️ Toxicity: {prob*100:.2f}%")
 
-        else:
-            air, water, soil, env = environmental_risk(smiles)
+        confidence = int(prob * 100)
+        st.progress(confidence)
 
-            st.success(f"⚠️ Toxicity: {prob*100:.2f}%")
-            #st.metric(
-               #label="Toxicity Probability",
-               #value=f"{prob*100:.2f}%")
-            confidence = int(prob * 100)
-            st.progress(confidence)
-            
-            # ✅ COLOR LABEL FIX
         if label == "TOXIC":
-            st.error(f"🔬 Label: {label}")   # RED
+            st.error(f"🔬 Label: {label}")
         else:
-            st.success(f"🔬 Label: {label}") # GREEN
+            st.success(f"🔬 Label: {label}")
 
         if prob < 0.3:
-                tox_level = "LOW"
+            tox_level = "LOW"
         elif prob < 0.7:
-                tox_level = "MEDIUM"
+            tox_level = "MEDIUM"
         else:
-                tox_level = "HIGH"
+            tox_level = "HIGH"
 
         st.write(f"🧪 Toxicity Level: **{tox_level}**")
 
-            # SAVE FOR GRAPH
         st.session_state.air = air
         st.session_state.water = water
         st.session_state.soil = soil
         st.session_state.env = env
+
         st.session_state.history.append({
             "SMILES": smiles,
             "Prediction": label,
