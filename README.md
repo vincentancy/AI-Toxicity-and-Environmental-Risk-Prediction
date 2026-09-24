@@ -266,7 +266,7 @@ AI-Toxicity-and-Environmental-Risk-Prediction/
 
 Try the deployed application here:
 
-[🌐 Open Live Application](PASTE-YOUR-STREAMLIT-LINK-HERE)
+[🌐 Open Live Application](https://ai-toxicity-and-environmental-risk-prediction-ajwdkwwb7lwuzcxn.streamlit.app/)
 
 
 ## 🧪 Example
