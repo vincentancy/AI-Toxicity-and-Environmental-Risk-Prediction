@@ -262,6 +262,11 @@ AI-Toxicity-and-Environmental-Risk-Prediction/
 ```
 
 ---
+## 🚀 Live Demo
+
+Try the deployed application here:
+
+[🌐 Open Live Application](PASTE-YOUR-STREAMLIT-LINK-HERE)
 
 
 ## 🧪 Example
