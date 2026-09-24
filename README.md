@@ -263,35 +263,6 @@ AI-Toxicity-and-Environmental-Risk-Prediction/
 
 ---
 
-## 🚀 Getting Started
-
-### 1. Clone the Repository
-
-```bash
-git clone https://github.com/vincentancy/AI-Toxicity-and-Environmental-Risk-Prediction.git
-```
-
-### 2. Navigate to the Project
-
-```bash
-cd AI-Toxicity-and-Environmental-Risk-Prediction
-```
-
-### 3. Install Dependencies
-
-```bash
-pip install -r requirements.txt
-```
-
-### 4. Start the Application
-
-```bash
-streamlit run app.py
-```
-
-Streamlit will launch the application in your browser.
-
----
 
 ## 🧪 Example
 
